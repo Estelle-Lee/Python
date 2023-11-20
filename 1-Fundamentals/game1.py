@@ -17,9 +17,13 @@ def end_game(total_score):
 
 
 # game_menu(): Calls game menu and prompt user to choose club and return user's choice
-# parameter: total_score
+# parameter: 
 # return: custom_input: integer
-def game_menu(total_score):
+def game_menu():
+
+    # further challenge 1: prompt user to enter the value within 5 seconds. print counting from terminal.
+    # further challenge 2: if player enter valid value within 5 seconds, check the second and store to initial_velocity
+    # further challenge 3: then return game_menu() function with custom_input and initial_velocity
     custom_input=input("You can now select your golf club or type exit/q to quit").lower()
     total_score=total_score
 
@@ -41,20 +45,30 @@ def find_goal_achievement(h):
     pass
 
 # start_game(): call to start the game
-# parameter: total_score, choice of club
+# parameter: choice of club
 # return: none
-def start_game(total_score,chosen_club):
+def start_game(chosen_club):
     # initial_velocity=float(input('Enter the initial velocity(m/s): '))
     # angle=float(input('Enter the angle of projection (degrees) '))
-    initial_velocity=random.randint(1:6)
-    angle=random.randint(1:6)
 
-    print("Rolling the dices of your power...")
-    print(f"Your power is {initial_velocity}!")
-    print("Rolling the dices of the club angle...")
-    print(f"Angle is {angle}!")
+    # Dice concept of velocity and angle
+    wind_dict={1:30,2:20,3:10,4:-10,5:-20,6:-30}
+    angle_dict={1:20,2:30,3:40,4:50,5:60,6:70}
 
-    t,h,v=calculate_distance(initial_velocity,angle)
+    dice_wind=random.randint(1,6)
+    is_wind_forward='forward'
+    if wind_dict[dice_wind]<0:
+        is_wind_forward='backward'
+
+    dice_angle=random.randint(1,6)
+
+    print('Rolling a dice...')
+    print(f"You roll {dice_wind} for wind and its' value is {is_wind_forward} {abs(wind_dict[dice_wind])}m/s")
+
+    print('Rolling another dice for...')
+    print(f"You roll {dice_angle} for angle and its' value is {angle_dict[dice_angle]}degree")
+
+    t,h,v=calculate_distance(wind_dict[dice_wind],angle_dict[dice_angle])
     achievement,achievement_point=find_goal_achievement(h)
     print(f'Wow! You hit {achievement}! \sYou score {achievement_point}points!')
     print(f'Wow! Duration of Flight: {t}s')
@@ -96,13 +110,18 @@ def calculate_distance(initial_velocity,angle):
 
 
 if __name__=='__main__':
+    
     total_score=0
 
-    print("Welcome to Go Fish text-based Game!")
+    print("===========Welcome to Go Fish text-based Game!===========")
 
-    chosen_club=game_menu(total_score)
+    # call game_menu function
+    # return it's value to chosen_club
+    chosen_club=game_menu()
 
-    start_game(total_score,chosen_club)
+    # call start_game function
+    # return it's value to total_score
+    total_score=start_game(chosen_club)
     
 
     

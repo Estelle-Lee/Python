@@ -18,3 +18,6 @@ for state in state_capitals:
 print()
 for state, city in state_capitals.items():
     print(city, "is the capital of", state)
+
+if "Washington" in state_capitals:
+    print("o")
