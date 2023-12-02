@@ -125,7 +125,7 @@ def game_menu():
 
 
 
-
+# Driver function
 if __name__=='__main__':
     
     total_score=0
