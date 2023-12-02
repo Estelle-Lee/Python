@@ -47,6 +47,18 @@ What is second player's name? Lee
 10. Each round, each player can select new club. Player can either choose same club or new club before hit.
 
 11. After Round 5, game ends and shows final score of each players, achievements they got.
+'''
+==========================================================
+======================= Game Over =======================
+
+Estelle scores 0
+Estelle achieves []
+Anne scores 0
+Anne achieves []
+==========================================================
+
+Wow, It's a tie!
+'''
 
 12. There is a speacial feature for players to experience, when the distance player had hit has break the record of guinness world record, the player will receive bonus points
 >>>
