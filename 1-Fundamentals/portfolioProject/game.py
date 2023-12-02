@@ -2,14 +2,13 @@
 Algorithm for Go Fish Game
 
 Start Date: 10/11/2023
-End Date:
+End Date: 02/12/2023
 
 """
 from math import sin,cos,radians
 import random
-from user_pkg.user import register
 
-round=1
+game_round=1
 total_score=0
 user_database={}
 player1_score=0
@@ -17,14 +16,18 @@ player2_score=0
 
 
 # end_game(): call to end the game
-# parameter: total_score
+# parameter:
 # return: none
 def end_game():
+    print()
+    print("==========================================================")
+    print("======================= Game Over =======================\n")
     print(f"{user1} scores {player1_score}")
     print(f"{user1} achieves {user_database[user1]}")
     print(f"{user2} scores {player2_score}")
     print(f"{user2} achieves {user_database[user2]}")
-    
+    print("==========================================================")
+    print()
     if player1_score<player2_score:
         print(f"\nCongratulations {user2} Won!")
     elif player1_score==player2_score:
@@ -35,9 +38,10 @@ def end_game():
     print("\n\nGoodbye")
 
     
-
-
-def find_goal_achievement(total_distance):
+# goal_zone(): called by find_goal_achievement()
+# parameter: total_distance: float
+# return: achievement: string, point: integer
+def goal_zone(total_distance):
     zone1_items=['Bomb']
     zone2_items=['Boots','Tin','Tuna Can']
     zone3_items=['Clownfish','Shellfish','Mickey Mouse Platy','Zebrafish']
@@ -46,128 +50,136 @@ def find_goal_achievement(total_distance):
     zone6_items=['Humpback whale']
 
     point=0
-    bonus_point=100
+    print()
+
     if total_distance>=0.5 and total_distance<30:
         print("Ooh, Worm cast")
-        print(f"You found {zone1_items()}\nYour earned {point} points")
-        return zone1_items,point
+        achievement=random.choice(zone1_items)
     if total_distance>=30 and total_distance<100:
-        achievement_index=random.randint(len(zone2_items)-1)
-        gained_point=1
-        point+=gained_point
-        print("You reached small pond!")
-        print(f"You found {zone2_items[achievement_index]}\nYour earned {gained_point} points")
-        return zone2_items[achievement_index],point
+        print("You reached to a small pond!")
+        achievement=random.choice(zone2_items)
+        point=1
     if total_distance>=100 and total_distance<206:
-        achievement_index=random.randint(len(zone3_items)-1)
-        gained_point=5
-        point+=gained_point
-        print("You reached rock island")
-        print(f"You found {zone3_items[achievement_index]}\nYour earned {gained_point} points")
-        return zone3_items[achievement_index],point
+        print("You reached to a rock island")
+        achievement=random.choice(zone3_items)
+        point=5
     if total_distance>=206 and total_distance<279:
-        achievement_index=random.randint(len(zone4_items)-1)
-        gained_point=30
-        point+=gained_point
-        print("You reached river!")
-        print(f"You found {zone4_items[achievement_index]}\nYour earned {gained_point} points")
-        return zone4_items[achievement_index],point
+        print("You reached to a river!")
+        achievement=random.choice(zone4_items)
+        point=30
     if total_distance>=279 and total_distance<326:
-        achievement_index=random.randint(len(zone5_items)-1)
-        gained_point=200
-        point+=gained_point
-        print("You reached ocean!")
-        print(f"You found {zone5_items[achievement_index]}\nYour earned {gained_point} points")
-        return zone5_items[achievement_index],point
+        print("You goaled to the ocean!")
+        achievement=random.choice(zone5_items)
+        point=200
     if total_distance>=326:
-        gained_point=500
-        point+=gained_point
-        print("You reached deap ocean!")
-        print(f"You found {zone6_items()}\nYour earned {gained_point} points")
+        print("You goaled to the deep DEEP ocean!")
+        achievement=random.choice(zone6_items)
+        point=500
 
-        if total_distance>433:
-            print("\n!!!Bonus Points!!!")
-            print("You broke the European Long Drive record!!!!!")
-            print("Recognised by Guinness World Records as the European Long Drive Championship is 433m (473 yards) by Allen Doyle in September 2005")
-            point+=bonus_point
-
-            if total_distance>463:
-                print("\n!!!More Bonus Points!!!")
-                print("You broke the South African Long Drive record!!!!!")
-                print("Recognised by Guinness World Records as the South African Long Drive Championship is 463m (506 yards) by Nico Grobbelaar in September 2012")
-                point+=bonus_point
-                
-                if total_distance>471:
-                    print("\n!!!You did it! Mega Bonus Points!!!")
-                    print("You broke the world record!!!!!")
-                    print("Recognised by Guinness World Records as the longest drive in a competition is 471m (515 yards) by 64-year-old Mike Austin in 1974 at the US Senior National Open Qualifier with a 43.5” steel shafted persimmon wood driver")
-                    point+=bonus_point
-
-        return zone6_items,point
+    return achievement,point
 
 
+# find_goal_achievement(): called by start_game()
+# parameter: total_distance: float
+# return: achievement: string, point: integer
+def find_goal_achievement(total_distance):
+    bonus_point=100
+
+    achievement,point=goal_zone(total_distance)
+    
+    if total_distance>433:
+        print("\n!!!Bonus Points!!!")
+        print("You broke the European Long Drive record!!!!!")
+        print("Recognised by Guinness World Records as the European Long Drive Championship is 433m (473 yards) by Allen Doyle in September 2005")
+        point+=bonus_point
+
+    if total_distance>463:
+        print("\n!!!More Bonus Points!!!")
+        print("You broke the South African Long Drive record!!!!!")
+        print("Recognised by Guinness World Records as the South African Long Drive Championship is 463m (506 yards) by Nico Grobbelaar in September 2012")
+        point+=bonus_point
+            
+    if total_distance>471:
+        print("\n!!!You did it! Mega Bonus Points!!!")
+        print("You broke the world record!!!!!")
+        print("Recognised by Guinness World Records as the longest drive in a competition is 471m (515 yards) by 64-year-old Mike Austin in 1974 at the US Senior National Open Qualifier with a 43.5” steel shafted persimmon wood driver")
+        point+=bonus_point
+
+    return achievement,point
 
 
+# calculate_distance(): called by start_game()
+# parameter: velocity: float, angle:integer
+# return: -1:break, distance: integer
 def calculate_distance(velocity,angle):
     angleR=radians(angle)
     gravity=9.8
-    velocity=float(velocity)
+
 
     if velocity<0.:
         return -1
     else:
         # flight time
         t_flight=2*velocity*sin(angleR)/gravity
-        t_flight=round(t_flight,2)
+
         #x-coordinate
         hDistance=velocity*cos(angleR)*t_flight
-        hDistance=round(hDistance,2)
 
         t=t_flight/2
-        t=round(t,2)
+
         #y-coordinate: peak point
         vDistance=velocity*sin(angleR)*t-gravity/2*t**2
-        vDistance=round(vDistance,2)
 
-        print("\nYou hit:")
-        print("Distance:", hDistance,"m")
-        print("Flight time:", t_flight,"s")
-        print("Vertical distance:", vDistance,"m")
+        print("\n====HIT STATUS====")
+        print("Distance:", round(hDistance,2),"m")
+        print("Flight time:", round(t_flight,2),"s")
+        print("Vertical distance:", round(vDistance,2),"m")
 
         return hDistance
     
 
+# print_scores(): called by next_turn()
+# parameter: none
+# return: none
+def print_scores():
+    print(f"============ Round {game_round} ============")
+    for userName,achievements in user_database.items():
+        print(f"{userName}: {achievements}")
+        print("Score:",player1_score if userName==user1 else player2_score)
 
+
+# next_turn(): called by start_game()
+# parameter: current_player:string
+# return: none
 def next_turn(current_player):
-    global total_score, player1_score, player2_score, round
+    global total_score, player1_score, player2_score, game_round
 
     if user_database[current_player] !="" or user_database[current_player]!=[]:
         if current_player==user1:
             player1_score+=total_score
             total_score=0
+
+            print_scores()
             game_menu(user2)
         else:
             player2_score+=total_score
             total_score=0
-            if round==5:
+            if game_round==5:
+                print_scores()
                 end_game()
             else:
-                round+=1
+                game_round+=1
+                print_scores()
                 game_menu(user1)
-
-        
-
 
 
 # start_game(): call to start the game
-# parameter: chosen_club: string
-#           club_force: int
+# parameter: player:string, chosen_club: string, club_force: int
 # return: none
 def start_game(player,chosen_club,club_force):
-    global total_score
-    global user_database
+    global total_score, user_database
    
-    print(f"\n--Round {round}: {player} with {chosen_club}!\n")
+    print(f"\n--Round {game_round}: {player} with {chosen_club}!\n")
     
     # Dice concept of velocity and angle
     wind_dict={1:30,2:20,3:10,4:0,5:-10,6:-20}
@@ -214,16 +226,20 @@ def start_game(player,chosen_club,club_force):
 
     if distance<0:
         print("Bad luck. You hit the ground")
+        achievement=""
+        point=0
     else:
-        prize,point=find_goal_achievement(distance)
+        achievement,point=find_goal_achievement(distance)
+        print()
+        if point==0:
+            print(f"{player} found {achievement}.\nCheer up =)")
+        else:
+            print(f"{player} found {achievement}\nYour earned {point} points")
 
-        user_database[player].append(prize)
-        total_score+=point
+    user_database[player].append(achievement)
+    total_score+=point
 
     next_turn(player)
-
-
-
 
 
 # game_menu(): Calls game menu and prompt user to choose club and return user's choice
@@ -262,23 +278,13 @@ def game_menu(player):
 
 # Driver function
 if __name__=='__main__':
-    try:
-        user1=input("Before game start...\nWhat is your name? ")       
-        user2=input("What is second player's name? ")
-        user_database[user1]=""
-        user_database[user2]=""
+    user1=input("Before game start...\nWhat is your name? ")       
+    user2=input("What is second player's name? ")
+    user_database[user1]=[]
+    user_database[user2]=[]
 
-        print("\n===========Welcome to Go Fish text-based Game!===========")
-        game_menu(user1)
-    except TypeError:
-        pass
-    except ValueError:
-        pass
-
-    # call start_game function
-    # return it's value to total_score
-    # achievement,achievement_point=start_game(chosen_club)
-    
+    print("\n===========Welcome to Go Fish text-based Game!===========")
+    game_menu(user1)
 
     
 
