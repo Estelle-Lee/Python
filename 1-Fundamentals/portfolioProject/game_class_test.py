@@ -7,7 +7,6 @@ End Date:
 """
 from math import sin,cos,radians
 import random
-from user_pkg.user import login,register
 
 round=1
 total_score=0
@@ -99,8 +98,6 @@ class gameUser(User):
             return zone6_items(),point
 
 
-
-
     def calculate_distance(velocity,angle):
         angleR=radians(angle)
         gravity=9.8
@@ -128,12 +125,10 @@ class gameUser(User):
         return total_score
         
 
-
     def next_turn(current_player):
         for user in user_database.keys():
             if current_player!=user:
                 game_menu(user)
-
 
     # start_game(): call to start the game
     # parameter: chosen_club: string
@@ -188,10 +183,6 @@ class gameUser(User):
         user_database[player]=score
         next_turn(player)
 
-
-
-
-
     # game_menu(): Calls game menu and prompt user to choose club and return user's choice
     # parameter: 
     # return: 0 / -1
@@ -242,7 +233,6 @@ class gameUser(User):
             print("Value Error")
             print("Try again")
             game_menu(player)
-
 
 # Driver function
 if __name__=='__main__':
