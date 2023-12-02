@@ -59,7 +59,9 @@ Idea 1: text based battle adventure game - finding way to exit with options of m
         If travel ends success, Player wins.
 
 
-                
+        # further challenge 1: prompt user to enter the value within 5 seconds. print counting from terminal.
+        # further challenge 2: if player enter valid value within 5 seconds, check the second and store to initial_velocity
+        # further challenge 3: then return game_menu() function with custom_input and initial_velocity
 
 
 

@@ -1,7 +1,7 @@
 from math import sin,cos,radians
 import random
 
-club_force={"Driver":13,"Wood":10,"Iron7":8,"Wedge":5,"Putter":3}
+club_force={"Driver":14,"Wood":10,"Iron7":8,"Wedge":5,"Putter":3}
 #hit_time=random.randint(1,5)
 hit_force=[0,1,2,3,4,5]  #hit force- do it random
 # initial_velocity=[]
@@ -21,18 +21,18 @@ max_angle=0
 index=0
 
 for club,force in club_force.items():
-    for time in hit_force:
-        velocity=force*time
+    for hitF in hit_force:
+        velocity=force*hitF
         
         # initial_velocity.append(velocity)
 
         print("-----------Default setting-----------")
         print(f"Club choice: {club}")
         print(f"Power: {force}")
-        print(f"Hit time: {time}")
+        print(f"Hit time: {hitF}")
         print(f"Velocity: {velocity}\n")
 
-        if time==0:
+        if hitF==0:
             print("You didn't hit! Missed your turn")
         else:
             if index==2:
