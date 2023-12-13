@@ -28,14 +28,17 @@ def end_game():
     print(f"{user2} achieves {user_database[user2]}")
     print("==========================================================")
     print()
-    if player1_score<player2_score:
-        print(f"\nCongratulations {user2} Won!")
-    elif player1_score==player2_score:
-        print(f"Wow, It's a tie!")
+    if user_database[user1]==[] and user_database[user2]==[]:
+        print("Sad to say good bye")
     else:
-        print(f"\nCongratulations {user1} Won!")
+        if player1_score<player2_score:
+            print(f"\nCongratulations {user2} Won!")
+        elif player1_score==player2_score:
+            print(f"Wow, It's a tie!")
+        else:
+            print(f"\nCongratulations {user1} Won!")
 
-    print("\n\nGoodbye")
+        print("\n\nGoodbye")
 
     
 # goal_zone(): called by find_goal_achievement()
@@ -259,32 +262,35 @@ def game_menu(player):
 
     if custom_input in 'exitExitqQ':
         end_game()
-    elif custom_input in 'driver1DriverDRIVER':
-        key='Driver'
-    elif custom_input in 'wood2WoodWOOD':
-        key='Wood'
-    elif custom_input in 'ironIronIRON3':
-        key='Iron7'
-    elif custom_input in 'wedgeWedgeWEDGE4':
-        key='Wedge'
-    elif custom_input in 'putterPutterPUTTER5':
-        key='Putter'    
     else:
-        print("Invalid insert\nPlease try again")
-        game_menu(player)
+        if custom_input in 'driver1DriverDRIVER':
+            key='Driver'
+        elif custom_input in 'wood2WoodWOOD':
+            key='Wood'
+        elif custom_input in 'ironIronIRON3':
+            key='Iron7'
+        elif custom_input in 'wedgeWedgeWEDGE4':
+            key='Wedge'
+        elif custom_input in 'putterPutterPUTTER5':
+            key='Putter'    
+        else:
+            print("Invalid insert\nPlease try again")
+            game_menu(player)
 
-    start_game(player,key,club_force[key])
+        start_game(player,key,club_force[key])
 
 
 # Driver function
 if __name__=='__main__':
-    user1=input("Before game start...\nWhat is your name? ")       
-    user2=input("What is second player's name? ")
-    user_database[user1]=[]
-    user_database[user2]=[]
+    while True:
+        user1=input("Before game start...\nWhat is your name? ")       
+        user2=input("What is second player's name? ")
+        user_database[user1]=[]
+        user_database[user2]=[]
 
-    print("\n===========Welcome to Go Fish text-based Game!===========")
-    game_menu(user1)
+    
+        print("\n===========Welcome to Go Fish text-based Game!===========")
+        game_menu(user1)
 
     
 
