@@ -156,4 +156,9 @@ REFERENCES categories (id);
 
 
 -- TODO create more constraints here...
+-- Employees (Bonus)
 
+ALTER TABLE employees
+ADD CONSTRAINT fk_employees_employees 
+FOREIGN KEY (reports_to) 
+REFERENCES employees;
