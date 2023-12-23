@@ -178,6 +178,9 @@ select AVG(shipper_count) from shippers_per_customer;
 
 SELECT p.product_name, c.category_name 
 FROM products p 
+JOIN categories c
+ON p.category_id=c.category_id
+ORDER BY p.product_id;
 
 
 
@@ -214,6 +217,9 @@ FROM products p
 SELECT DISTINCT r.region_description, t.territory_description, e.last_name, e.first_name
 FROM employees e
 JOIN employees_territories et ON e.employee_id = et.employee_id
+JOIN territories t ON et.territory_id=t.territory_id
+JOIN regions r ON t.region_id=r.region_id
+ORDER BY r.region_description, t.territory_description, e.last_name,e.first_name;
 
 
 
@@ -242,6 +248,9 @@ JOIN employees_territories et ON e.employee_id = et.employee_id
 
 SELECT s.state_name, s.state_abbr, c.company_name
 FROM us_states s
+LEFT JOIN customers c
+ON s.state_abbr=c.region
+ORDER BY state_name;
 
 
 
@@ -270,7 +279,11 @@ FROM us_states s
 -- from a subquery that selects the territory_id from the employee_territories table. 
 
 -- Finally, take the final result set and order by territory_id.
-
+select t.territory_description, r.region_description
+from territories t
+join regions r on t.region_id=r.region_id
+where t.territory_id not in (select et.territory_id from employees_territories et)
+order by t.territory_id;
 
 
 -- 3.5
@@ -282,7 +295,12 @@ FROM us_states s
 --
 -- Hint: While there are other ways, this is a good chance to use the UNION
 -- operator, as demonstrated in the lesson SQL Set Operations.
-
+select company_name, address, city, region, postal_code, country
+from suppliers
+UNION
+select company_name,address,city,region,postal_code,country
+from customers
+order by company_name;
 
 
 -- BONUS (optional)
@@ -311,3 +329,9 @@ FROM us_states s
 --
 -- Finally, order by the SUM of the quantity of the order_details table, 
 -- in descending order.
+select c.company_name, sum(od.quantity) as quantities from order_details od
+join orders o on od.order_id=o.order_id
+join customers c on o.customer_id=c.customer_id
+group by c.customer_id
+having sum(od.quantity)>=500
+order by quantities desc;
