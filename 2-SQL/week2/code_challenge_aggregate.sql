@@ -1,9 +1,9 @@
 -- For each customer, 
 -- list the customer_id and the order_date 
 -- of their first order. Sort by customer_id.
-select genre, count(*) from books
+select genre, count(*) as c from books
 group by genre
-having count(*)>1;
+having c>1;
 
 
 -- For each customer, 
