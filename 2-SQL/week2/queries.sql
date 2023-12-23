@@ -70,7 +70,7 @@ order by product_id;
 -- 2.1
 -- How many orders have been made?
 -- Write a SELECT query that will count all rows/records in the orders table.
-
+select COUNT(*) from orders;
 
 
 -- 2.2
@@ -81,7 +81,9 @@ order by product_id;
 -- then customer_id.
 -- Think carefully about how this query answers the question, how many
 -- orders has each customer made?
-select COUNT(*) 
+select customer_id, COUNT(order_id) as order_count from orders
+group by customer_id
+order by order_count desc, customer_id;
 
 
 -- 2.3
@@ -99,7 +101,10 @@ select COUNT(*)
 -- and where you might want to focus more advertising - a great data
 -- science application! We will take a closer look at data science and
 -- data visualizations in a future lesson.
-
+select ship_address, COUNT(order_id) as order_count from orders
+group by ship_address
+order by order_count desc
+limit 1;
 
 
 -- 2.4
@@ -114,7 +119,10 @@ select COUNT(*)
 -- Use the HAVING clause to only include results where the SUM(freight) 
 -- is more than $500. 
 -- Order the results by customer_id.
-
+select customer_id, SUM(freight) from orders
+group by customer_id
+having sum(freight)>500
+order by customer_id;
 
 
 -- 2.5
@@ -141,10 +149,10 @@ select COUNT(*)
 -- was created by the WITH query).
 
 WITH shippers_per_customer AS (
-    -- Delete this line and replace it with your first SELECT query to create the CTE.
+    select COUNT(DISTINCT ship_via) as shipper_count from orders
+    group by customer_id
 ) 
--- Delete this line and replace it with your second SELECT query using the CTE.
-
+select AVG(shipper_count) from shippers_per_customer;
 
 
 
