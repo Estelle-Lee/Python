@@ -4,9 +4,9 @@
 -- zero or more categories, and they want the database to keep track of who is
 -- an expert in what. 
 -- Q: How will you satisfy this new requirement? 
--- A:
+-- A: Build a employees_categories table that has two primary key of category id and employee id.
 -- Q: What type of relationship is this? (e.g. 1-1, 1-many, or many-to-many?)
--- A: 
+-- A: many-many
 -- Fill in your answer above. 
 
 
@@ -21,7 +21,11 @@
 -- Test your answer by running it in pgAdmin or psql. Afterward, verify
 -- that the employees_categories has been created with the expected columns
 -- and primary key. Place your answer in the blank space below. 
-
+create table employees_categories(
+	employee_id INT,
+	category_id INT,
+	PRIMARY KEY (employee_id, category_id)
+);
 
 
 -- 4.2: Alter table
@@ -33,7 +37,10 @@
 --
 -- Test your answer in pgAdmin or psql and verify that it worked correctly, then
 -- place it in the blank space below.
-
+alter table employees_categories
+add constraint fk_ec_employees
+foreign key (employee_id)
+references employees;
 
 
 -- 4.3: Alter table
@@ -45,7 +52,10 @@
 --
 -- Test your answer in pgAdmin or psql and verify that it worked correctly, then
 -- place it in the blank space below.
-
+alter table employees_categories
+add constraint fk_ec_categories
+foreign key (category_id)
+references categories;
 
 
 -- 4.4: Insert records
@@ -55,7 +65,8 @@
 --
 -- Test your answer in pgAdmin or psql and verify that it worked correctly, then
 -- place it in the blank space below.
-
+insert into employees_categories (employee_id, category_id)
+values (1,2),(3,4), (4,3), (4,4), (8,2), (1,8), (1,3), (1,6);
 
 
 -- 4.5: Remove records
@@ -66,7 +77,7 @@
 -- 
 -- Test your answer in pgAdmin or psql and verify that it worked correctly, then
 -- place it in the blank space below.
-
+delete from employees_categories;
 
 
 -- Bonus Task (optional)
@@ -80,7 +91,25 @@
 -- Test your answer in pgAdmin or psql and verify that it worked correctly, then
 -- place it in the blank space below.
 
+-- Not worked
+-- insert into employees_categories (employee_id, category_id) 
+-- values (select e.employee_id
+-- 		from employees e
+-- 		where e.city='London', 
+-- 		select c.category_id
+-- 		from categories c
+-- 		where c.category_name ilike 'dairy%');
 
+-- Not worked
+-- insert into employees_categories (employee_id, category_id)
+-- (select employee_id from employees where city='London'),
+-- (select category_id from categories where category_name ilike 'dairy%');
+
+--Worked!!!!
+insert into employees_categories (employee_id, category_id)
+select employee_id, (select category_id from categories where category_name ilike 'dairy%')
+from employees 
+where city='London';
 
 -- 4.6: Delete table
 -- Write a query to delete the employees_categories table entirely,
@@ -90,3 +119,4 @@
 --
 -- Test your answer in pgAdmin or psql and verify that it worked correctly, then
 -- place it in the blank space below.
+drop table employees_categories;
