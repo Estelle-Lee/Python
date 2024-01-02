@@ -17,6 +17,18 @@ class User(db.Model):
 
     tweets=db.relationship('Tweet',backref='user',cascade="all,delete")
 
+    # user model revisited.
+    # add constructor function
+    def __init__(self,username:str, password:str):
+        self.username=username
+        self.password=password
+
+    def serialize(self):
+        return{
+            'id':self.id,
+            'username':self.username
+        }
+
 # Next:
 # generate a migration file 
 # that we can use to create a users table in our Postgres database from the User class/model.
