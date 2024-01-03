@@ -2,6 +2,8 @@ from flask import Blueprint, jsonify, abort, request
 from ..models import User,db,Tweet,likes_table
 import hashlib
 import secrets
+import sqlalchemy
+
 
 def scramble(password: str):
     """Hash and salt the given password"""
@@ -97,5 +99,51 @@ def update(id:int):
         return jsonify(u.serialize())
     except:
         return jsonify(False)
+    
+@bp.route('/<int:id>/liked_tweets', methods=['GET'])
+def liked_tweets(id:int):
+    u=User.query.get_or_404(id)
+
+    result=[]
+
+    for t in u.liked_tweets:
+        result.append(t.serialize())
+    return jsonify(result)
+
+
+# Bonus Task 1 -- NO IDEA
+@bp.route('/<int:id>/likes', methods=['POST'])
+def like(id:int):
+    if 'tweet_id' not in request.json:
+        return abort(400)
+    tweet_id=request.json['tweet_id']
+
+    u=User.query.get_or_404(id,"User not found")
+    t=Tweet.query.filter_by(tweet_id=id).get_or_404()
+
+    # A User should not be able to like a Tweet twice.
+    # Therefore, any subsequent requests should respond with false.
+    stmt=sqlalchemy.insert(User).values(liking_users=u,liked_tweets=t)
+
+
+# Bonus Task 2 -- NO IDEA
+@bp.route('/<int:tweet_id>/likes/<int:user_id>', methods=['DELETE'])
+def unlike(user_id:int,tweet_id):
+    u=User.query.get_or_404(user_id,"User not found")
+    t=Tweet.query.get_or_404(tweet_id,"Tweet not found")
+
+    try:
+        # prepare DELETE statement
+        # db.session.delete(u)
+        stmt=sqlalchemy.delete(likes_table).where(likes_table.tweet_id==t)
+
+        # execute DELETE statement
+        db.session.commit()
+
+        return jsonify(True)
+    except:
+        # something went wrong :(
+        return jsonify(False)
+
 
 
