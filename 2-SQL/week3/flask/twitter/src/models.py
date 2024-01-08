@@ -96,7 +96,8 @@ class Tweet(db.Model):
     # we are going to serialize a Tweet as a simple dictionary with key-value pairs for each column in the tweets database table.
     # the only formatting we will make is to the created_at timestamp
         # convert this to a format known as ISO Format
-    
+
+
     def serialize(self):
         return{
             'id':self.id,
