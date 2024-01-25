@@ -39,6 +39,11 @@ CREATE TABLE authors (
 	supervisor_id INT
 );
 
+-- add column to authors
+ALTER TABLE authors ADD COLUMN fullname TEXT;
+UPDATE authors SET fullname = CONCAT(first_name,' ',last_name);
+
+
 CREATE TABLE supervisors(
 	id SERIAL PRIMARY KEY,
 	first_name TEXT NOT NULL,
@@ -106,6 +111,7 @@ ALTER TABLE authors
 ADD CONSTRAINT fk_authors_supervisors
 FOREIGN KEY (supervisor_id)
 REFERENCES supervisors;
+
 
 
 -- insert data
@@ -193,6 +199,16 @@ Partnership
 Partnership
 Tara Donnelly
 Elissaveta M. Brandon
+
+-- partnership should not be in the authors table 
+-- but currently, articles table have a foreign key of authors_id [INT] 
+-- so cannot make a default value of \'sponsorship\'.
+-- as well as, I cannot modify a foreign key of authors_id to authors_fullname
+-- because I stored first name and last name seperatly in authors table.
+-- how do I merge firstname and last name and select the full name to foreign key?
+
+-- 1st method: CONCAT(first_name, last_name) as fullname
+
 
 INSERT INTO authors (first_name,last_name,email)
 VALUES ('Partnership',null,null),

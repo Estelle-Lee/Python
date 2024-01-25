@@ -26,7 +26,8 @@ authors: index [GET], create [POST], show [GET], update [PUT], delete [DELETE], 
 Question 3:
 Brainstorm and describe some potential endpoints that you could implement in the future, that make sense for your application. 
 
->> magazines: subscribe_count [GET], listed_article [GET]
+>> magazines: subscribe_by [GET], listed_article [GET]
+
 
 
 
